@@ -1,0 +1,8 @@
+name: 'mock_search_tool'
+description: 'mock search tool'
+tool_type: 'api'
+input_keys: ['input']
+metadata:
+  type: 'TOOL'
+  module: 'writeworld.core.tool.mock_search_tool'
+  class: 'MockSearchTool'

@@ -169,3 +169,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+#private
+config/.custom_key.toml
+
+# windsurf rules
+.windsurfrules
