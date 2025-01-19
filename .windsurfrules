@@ -1,0 +1,3 @@
+1. 每次更改代码或目录后都运行至少一个测试以保证代码基本质量。
+2. 前端使用Ant Designt提出的 RICH 设计范式，技术实现使用Next.js:https://x.ant.design/docs/react/use-with-next
+3. 后端使用 Python 
