@@ -1,11 +1,54 @@
-import { TranslationProcessProps } from '@/types/components';
-import { Spin } from 'antd';
-import { TranslationOutlined, BulbOutlined, GlobalOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Timeline } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import ReactMarkdown from 'react-markdown';
+import type { TranslationStep } from '@/types/components';
 
-const stepIcons = {
-  init: <TranslationOutlined aria-label="初始翻译" />,
-  enhance: <BulbOutlined aria-label="文学优化" />,
-  cultural: <GlobalOutlined aria-label="文化适应" />,
+interface CollapsibleTextProps {
+  text: string;
+  maxLength?: number;
+}
+
+const CollapsibleText: React.FC<CollapsibleTextProps> = ({ text, maxLength = 300 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldCollapse = text.length > maxLength;
+
+  if (!shouldCollapse) {
+    return <ReactMarkdown>{text}</ReactMarkdown>;
+  }
+
+  return (
+    <div>
+      <ReactMarkdown>
+        {isExpanded ? text : text.slice(0, maxLength) + '...'}
+      </ReactMarkdown>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="text-primary hover:text-primary-dark text-sm mt-1"
+      >
+        {isExpanded ? '收起' : '展开全文'}
+      </button>
+    </div>
+  );
+};
+
+interface TranslationProcessProps {
+  steps: TranslationStep[];
+  currentStep: number;
+  isLoading: boolean;
+}
+
+const getIcon = (type: string) => {
+  switch (type) {
+    case 'init':
+      return '🔍';
+    case 'enhance':
+      return '✨';
+    case 'cultural':
+      return '🎯';
+    default:
+      return '📝';
+  }
 };
 
 export const TranslationProcess: React.FC<TranslationProcessProps> = ({
@@ -22,32 +65,24 @@ export const TranslationProcess: React.FC<TranslationProcessProps> = ({
   }
 
   return (
-    <div className="space-y-4 p-4">
-      {steps.map((step, index) => (
-        <div
-          key={step.timestamp}
-          className={`flex items-start space-x-3 p-3 rounded-lg transition-colors duration-200 ${
-            index === currentStep ? 'bg-primary/10' : ''
-          }`}
-        >
-          <div className="flex-shrink-0 text-xl text-primary">
-            {stepIcons[step.type]}
-          </div>
-          <div className="flex-grow">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">
-                {step.content}
-              </span>
-              {index === currentStep && isLoading && (
-                <Spin size="small" role="progressbar" />
-              )}
+    <Timeline
+      items={[
+        ...steps.map((step, index) => ({
+          dot: isLoading && index === currentStep ? (
+            <LoadingOutlined className="text-primary" />
+          ) : (
+            <span className="text-lg">{getIcon(step.type)}</span>
+          ),
+          children: (
+            <div className="py-1">
+              <CollapsibleText text={step.content} />
+              <div className="text-xs text-gray-400 mt-1">
+                {new Date(step.timestamp).toLocaleTimeString()}
+              </div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">
-              {new Date(step.timestamp).toLocaleTimeString()}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+          ),
+        })),
+      ]}
+    />
   );
 };

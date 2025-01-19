@@ -87,22 +87,22 @@ export async function translateText(
               if (process.init_agent_result) {
                 onProgress?.({
                   type: 'init',
-                  content: '初始翻译：' + process.init_agent_result.split('\n')[0]
+                  content: '初始翻译：\n' + process.init_agent_result
                 });
-                translatedText = process.init_agent_result.split('\n')[0];
+                translatedText = process.init_agent_result;
               }
               
               if (process.reflection_agent_result) {
                 onProgress?.({
                   type: 'enhance',
-                  content: '正在优化翻译...'
+                  content: '让我想想：\n' + process.reflection_agent_result
                 });
               }
               
               if (process.improve_agent_result) {
                 onProgress?.({
                   type: 'cultural',
-                  content: '最终翻译：' + process.improve_agent_result
+                  content: '最终翻译：\n' + process.improve_agent_result
                 });
                 translatedText = process.improve_agent_result;
               }
