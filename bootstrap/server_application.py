@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
-"""
-Server application for WriteWorld.
-
-@Time    : 2024/4/8 20:58
-@Author  : jerry.zzw
-@Email   : jerry.zzw@antgroup.com
-@FileName: server_application.py
-"""
-
 import os
 from pathlib import Path
 

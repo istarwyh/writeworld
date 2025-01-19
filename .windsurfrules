@@ -1,3 +1,4 @@
 1. 每次更改代码或目录后都运行至少一个测试以保证代码基本质量。
-2. 前端使用Ant Designt提出的 RICH 设计范式，技术实现使用Next.js:https://x.ant.design/docs/react/use-with-next
-3. 后端使用 Python 
+2. 前端使用Ant Designt提出的[RICH 设计范式](https://x.ant.design/docs/spec/introduce-cn)，技术实现使用Next.js:https://x.ant.design/docs/react/use-with-next
+3. 后端使用 Python,Agent 框架不限，目前使用AgentUniverse
+4. 开发时尽可能使用TDD的方式开发，优先伦敦学派风格，对于复杂、不确定性高的功能使用芝加哥学派风格
