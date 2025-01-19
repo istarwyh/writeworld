@@ -172,6 +172,3 @@ cython_debug/
 
 #private
 config/.custom_key.toml
-
-# windsurf rules
-.windsurfrules
