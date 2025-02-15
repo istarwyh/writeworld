@@ -10,7 +10,7 @@ from writeworld.core.events.stream_events import (
 )
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def agent_info() -> Dict[str, str]:
     return {"name": "test_agent", "type": "test"}
 

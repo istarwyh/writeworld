@@ -1,4 +1,19 @@
 1. 每次更改代码或目录后都运行至少一个测试以保证代码基本质量。
+
 2. 前端使用Ant Designt提出的[RICH 设计范式](https://x.ant.design/docs/spec/introduce-cn)，技术实现使用Next.js:https://x.ant.design/docs/react/use-with-next
-3. 后端使用 Python,Agent 框架不限，目前使用AgentUniverse
+
+3. 后端使用 Python。Agent 框架不限，目前使用AgentUniverse
+
 4. 开发时尽可能使用TDD的方式开发，优先伦敦学派风格，对于复杂、不确定性高的功能使用芝加哥学派风格
+
+5. PYTHON开发遵循《Effective Python》等最佳实践
+
+6. 每次更改后使用 pre-commit run mypy 检查文件类型，类型处理经验：
+   - 使用文件级别的 mypy 配置来禁用特定警告（如：# mypy: disable-error-code=import-untyped）
+   - 为未类型化的第三方库导入添加适当的类型忽略注释
+   - 使用 `cast` 函数确保类型安全，特别是处理动态类型时
+   - 为字典操作添加默认值，避免可能的 `None` 值
+   - 使用 TypeVar 进行泛型类型标注
+   - 为集合类型（如 List, Dict）提供具体的类型参数
+   - 在处理可选值时使用 Optional 类型
+   - 为函数参数和返回值添加明确的类型标注

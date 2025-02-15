@@ -1,0 +1,20 @@
+info:
+  name: 'streaming_translation_agent'
+  description: '基于事件的流式翻译 Agent'
+profile:
+  tracing: false
+  prompt_version: 'one_chunk_improve.en'
+  input_keys: ['source_lang', 'target_lang', 'source_text']
+  output_keys: ['output']
+  llm_model:
+    name: 'default_qwen_llm'
+    max_tokens: 1000
+plan:
+action:
+  tool:
+memory:
+  name: ''
+metadata:
+  type: 'AGENT'
+  module: 'writeworld.core.agent.translation_agent_case.streaming_translation_agent'
+  class: 'StreamingTranslationAgent'

@@ -1,3 +1,4 @@
+# mypy: disable-error-code=import-not-found
 import unittest
 import warnings
 from pathlib import Path
