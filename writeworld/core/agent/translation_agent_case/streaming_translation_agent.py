@@ -1,4 +1,5 @@
 # mypy: disable-error-code=import-not-found
+from abc import ABC, abstractmethod
 from queue import Queue
 from typing import Any, Dict, Optional, TypeVar, Union, cast
 
@@ -20,7 +21,7 @@ from writeworld.core.events.stream_events import (
 T = TypeVar("T")
 
 
-class StreamingTranslationAgent(Agent):  # type: ignore[misc]
+class StreamingTranslationAgent(Agent, ABC):
     """Base class for streaming translation agents with event-based output"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -68,13 +69,19 @@ class StreamingTranslationAgent(Agent):  # type: ignore[misc]
             agent_input[key] = input_object.get_data(key)
         return agent_input
 
-    def execute_with_events(self, stage: int, agent_name: str, agent_input: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def execute_with_events(
+        self, input_object: InputObject, stage: int, agent_name: str, agent_input: Dict[str, Any]
+    ) -> Optional[Dict[str, Any]]:
         """Execute an agent with event handling"""
         try:
             self.start_agent(stage)
-            result = self.execute_agent(agent_name, agent_input)
+            result = self.execute_agent(input_object, agent_name, agent_input)
             if result:
-                result_dict = cast(Dict[str, Any], result.to_dict())
+                # Handle both OutputObject and dict results
+                result_dict = result.to_dict() if hasattr(result, "to_dict") else result
+                if not isinstance(result_dict, dict):
+                    LOGGER.error(f"Unexpected result type from agent {agent_name}: {type(result_dict)}")
+                    return None
                 self.emit_result(result_dict, stage)
                 return result_dict
             return None
@@ -84,7 +91,9 @@ class StreamingTranslationAgent(Agent):  # type: ignore[misc]
             return None
 
     @staticmethod
-    def execute_agent(agent_name: str, agent_input: Dict[str, Any]) -> Optional[OutputObject]:
+    def execute_agent(
+        input_object: InputObject, agent_name: str, agent_input: Dict[str, Any]
+    ) -> Optional[Union[OutputObject, Dict[str, Any]]]:
         """Execute a single agent"""
         agent = cast(Agent, AgentManager().get_instance_obj(agent_name))
-        return agent.execute(agent_input)
+        return agent.execute(input_object, agent_input)

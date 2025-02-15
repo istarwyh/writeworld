@@ -1,6 +1,5 @@
 # mypy: disable-error-code=import-not-found
 # mypy: disable-error-code=import-untyped
-# mypy: disable-error-code=import-not-found
 from queue import Queue
 from typing import Any, Dict, List, Optional, TypeVar, cast
 
@@ -10,7 +9,7 @@ from agentuniverse.agent.input_object import InputObject
 from agentuniverse.base.util.logging.logging_util import LOGGER
 from agentuniverse.llm.llm import LLM
 from agentuniverse.llm.llm_manager import LLMManager
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from writeworld.core.agent.translation_agent_case.streaming_translation_agent import (
     StreamingTranslationAgent,
@@ -48,21 +47,21 @@ class TranslationAgent(StreamingTranslationAgent):
         reflection_agent = "translation_reflection_agent"
         improve_agent = "translation_improve_agent"
 
-        init_agent_result = self.execute_with_events(1, work_agent, planner_input)
+        init_agent_result = self.execute_with_events(input_object, 1, work_agent, planner_input)
         LOGGER.info(f"init_agent_result: {init_agent_result}")
         if not init_agent_result:
             return {"output": ""}
 
         planner_input["init_agent_result"] = init_agent_result.get("output", "")
 
-        reflection_result = self.execute_with_events(2, reflection_agent, planner_input)
+        reflection_result = self.execute_with_events(input_object, 2, reflection_agent, planner_input)
         LOGGER.info(f"reflection_result: {reflection_result}")
         if not reflection_result:
             return {"output": init_agent_result.get("output", "")}
 
         planner_input["reflection_agent_result"] = reflection_result.get("output", "")
 
-        improve_result = self.execute_with_events(3, improve_agent, planner_input)
+        improve_result = self.execute_with_events(input_object, 3, improve_agent, planner_input)
         LOGGER.info(f"improve_agent_result: {improve_result}")
         if not improve_result:
             return {"output": reflection_result.get("output", "")}
