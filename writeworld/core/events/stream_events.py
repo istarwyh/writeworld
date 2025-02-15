@@ -57,6 +57,7 @@ class TokenGenerateEvent(StreamEvent):
     index: int
     total_tokens: int
     current_tokens: int
+    is_complete: bool = False
 
     def get_event_type(self) -> str:
         return "token_generate"
@@ -68,7 +69,7 @@ class TokenGenerateEvent(StreamEvent):
         return "in_progress"
 
     def get_content(self) -> Dict[str, Any]:
-        return {"text": self.token, "index": self.index, "isComplete": False}
+        return {"text": self.token, "index": self.index, "isComplete": self.is_complete}
 
     def get_metadata(self) -> Dict[str, Any]:
         progress = (self.current_tokens / self.total_tokens * 90) if self.total_tokens > 0 else 0
@@ -118,6 +119,51 @@ class AgentStartEvent(StreamEvent):
 
     def get_metadata(self) -> Dict[str, Any]:
         return {}
+
+
+@dataclass
+class AgentCompleteEvent(StreamEvent):
+    """Event for agent completion"""
+
+    result: str
+    stage: int
+
+    def get_event_type(self) -> str:
+        return "agent_complete"
+
+    def get_stage(self) -> int:
+        return self.stage
+
+    def get_status(self) -> str:
+        return "complete"
+
+    def get_content(self) -> Dict[str, Any]:
+        return {"text": self.result, "isComplete": True}
+
+    def get_metadata(self) -> Dict[str, Any]:
+        return {"progress": 100}
+
+
+@dataclass
+class CompleteEvent(StreamEvent):
+    """Event for overall task completion"""
+
+    final_result: Dict[str, Any]
+
+    def get_event_type(self) -> str:
+        return "complete"
+
+    def get_stage(self) -> int:
+        return 999  # Final stage
+
+    def get_status(self) -> str:
+        return "complete"
+
+    def get_content(self) -> Dict[str, Any]:
+        return {"text": str(self.final_result), "isComplete": True}
+
+    def get_metadata(self) -> Dict[str, Any]:
+        return {"progress": 100}
 
 
 @dataclass
