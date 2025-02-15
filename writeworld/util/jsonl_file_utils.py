@@ -11,7 +11,7 @@ import sys
 
 from agentuniverse.base.util.logging.logging_util import LOGGER
 
-DATA_DIR = './data/'
+DATA_DIR = "./data/"
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
@@ -23,8 +23,8 @@ class JsonFileOps(object):
     @classmethod
     def is_file_exist(cls, file_path):
         file_name, ext = os.path.splitext(file_path)
-        if ext.lower() != '.jsonl':
-            raise Exception('Unsupported file extension')
+        if ext.lower() != ".jsonl":
+            raise Exception("Unsupported file extension")
         return os.path.exists(file_path)
 
 
@@ -33,7 +33,7 @@ class JsonFileReader(object):
         self.file_handler = None
         self.file_name = file_path
         if JsonFileOps.is_file_exist(file_path):
-            self.file_handler = open(file_path, 'r', encoding='utf-8')
+            self.file_handler = open(file_path, "r", encoding="utf-8")
 
     def read_json_obj(self):
         if not self.file_handler:
@@ -45,7 +45,7 @@ class JsonFileReader(object):
                 return json_obj
             except Exception as e:
                 LOGGER.warn(f"except[read_json_line]>>>{e}:{json_line}")
-                return json.loads('{}')
+                return json.loads("{}")
         else:
             return None
 
@@ -60,18 +60,18 @@ class JsonFileReader(object):
 
 
 class JsonFileWriter(object):
-    def __init__(self, output_file_name: str, extension='jsonl', directory=DATA_DIR):
-        self.outfile_path = directory + output_file_name + '.' + extension
+    def __init__(self, output_file_name: str, extension="jsonl", directory=DATA_DIR):
+        self.outfile_path = directory + output_file_name + "." + extension
         directory = os.path.dirname(self.outfile_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        self.outfile_handler = open(self.outfile_path, 'w', encoding='utf-8')
+        self.outfile_handler = open(self.outfile_path, "w", encoding="utf-8")
 
     def write_json_obj(self, json_obj: dict):
         try:
             # confirm that it's a json string and then write.
             json_line = json.dumps(json_obj, ensure_ascii=False)
-            self.outfile_handler.write(json_line.strip() + '\n')
+            self.outfile_handler.write(json_line.strip() + "\n")
             self.outfile_handler.flush()
         except Exception as e:
             LOGGER.warn(f"except[write_json_obj]>>>{e}:{json_obj}")

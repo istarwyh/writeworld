@@ -1,9 +1,10 @@
 import warnings
+from pathlib import Path
+from typing import Any, Generator
+from unittest.mock import MagicMock, patch
+
 import pytest
 from _pytest.config import Config
-from pathlib import Path
-from typing import Generator, Any
-from unittest.mock import MagicMock, patch
 
 
 def pytest_configure(config: Config) -> None:

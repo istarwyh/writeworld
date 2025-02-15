@@ -23,10 +23,10 @@ jest.mock('antd', () => {
 describe('Header Component', () => {
   it('renders logo and navigation links', () => {
     render(<Header />);
-    
+
     // Check logo
     expect(screen.getByText('WriteWorld')).toBeInTheDocument();
-    
+
     // Check navigation links
     expect(screen.getByText('首页')).toBeInTheDocument();
     expect(screen.getByText('翻译')).toBeInTheDocument();

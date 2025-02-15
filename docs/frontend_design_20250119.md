@@ -70,11 +70,11 @@
   --primary-color: #363945;  /* 墨色 */
   --secondary-color: #8B9DAF; /* 淡墨 */
   --accent-color: #E6B422;   /* 金色点缀 */
-  
+
   /* 背景色 */
   --bg-primary: #FAFAFA;     /* 宣纸色 */
   --bg-secondary: #F5F5F5;   /* 浅灰 */
-  
+
   /* 文字颜色 */
   --text-primary: #333333;
   --text-secondary: #666666;

@@ -35,7 +35,7 @@ describe('TranslationArea', () => {
     // Get language selectors
     const sourceSelector = screen.getAllByRole('combobox')[0];
     const targetSelector = screen.getAllByRole('combobox')[1];
-    
+
     // Verify initial languages
     expect(screen.getByTitle('中文')).toBeInTheDocument();
     expect(screen.getByTitle('英文')).toBeInTheDocument();

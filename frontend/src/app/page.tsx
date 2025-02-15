@@ -10,8 +10,8 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <h1 className="text-4xl font-bold mb-8">WriteWorld</h1>
       <div className="flex gap-4">
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           onClick={() => router.push('/translation')}
         >
           翻译

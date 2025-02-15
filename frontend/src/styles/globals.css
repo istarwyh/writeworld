@@ -39,8 +39,8 @@
 /* 自定义组件样式 */
 @layer components {
   .input {
-    @apply px-4 py-2 rounded border border-gray-200 
-           focus:outline-none focus:border-primary 
+    @apply px-4 py-2 rounded border border-gray-200
+           focus:outline-none focus:border-primary
            transition-all duration-300;
   }
 

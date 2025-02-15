@@ -44,7 +44,7 @@ get_commit_input() {
     echo -e "  ${GREEN}test${NC}     - Testing"
     echo -e "  ${GREEN}chore${NC}    - Maintenance"
     echo -e "  ${GREEN}ci${NC}       - CI/CD changes"
-    
+
     # Get commit type
     while true; do
         read -r -p "Type> " commit_type
@@ -54,12 +54,12 @@ get_commit_input() {
         fi
         echo -e "${RED}Invalid type. Please select from the list above.${NC}"
     done
-    
+
     # Get commit scope (optional)
     echo -e "\n${BLUE}Step 2/4: Enter scope${NC} ${YELLOW}(optional, press Enter to skip)${NC}"
     echo "Examples: ui, api, auth"
     read -r -p "Scope(Optional)> " commit_scope
-    
+
     # Get commit subject
     echo -e "\n${BLUE}Step 3/4: Enter description${NC}"
     echo "Example: add login button to homepage"
@@ -73,24 +73,24 @@ get_commit_input() {
             break
         fi
     done
-    
+
     # Get commit body (optional)
     echo -e "\n${BLUE}Step 4/4: Enter detailed description${NC} ${YELLOW}(optional, press Enter to skip)${NC}"
     read -r commit_body
-    
+
     # Construct commit message
     if [[ -n "$commit_scope" ]]; then
         commit_message="${commit_type}(${commit_scope}): ${commit_subject}"
     else
         commit_message="${commit_type}: ${commit_subject}"
     fi
-    
+
     if [[ -n "$commit_body" ]]; then
         commit_message="${commit_message}
 
 ${commit_body}"
     fi
-    
+
     echo "$commit_message"
 }
 
@@ -110,10 +110,10 @@ read -r -p "Commit these changes? (y/N)> " confirm
 if [[ "$confirm" =~ ^[Yy] ]]; then
     # Stage all changes
     git add . || { echo -e "${RED}Error: Failed to stage changes${NC}"; exit 1; }
-    
+
     # Commit with the constructed message
     git commit -m "$full_commit_message" || { echo -e "${RED}Error: Failed to commit changes${NC}"; exit 1; }
-    
+
     # Ask about pushing changes
     echo -e "\n${BLUE}Would you like to push these changes? (y/N)${NC}"
     read -r -p "Push> " should_push
@@ -123,7 +123,7 @@ if [[ "$confirm" =~ ^[Yy] ]]; then
         git push origin "$current_branch" || { echo -e "${RED}Error: Failed to push changes${NC}"; exit 1; }
         echo -e "${GREEN}Push successful!${NC}"
     fi
-    
+
     echo -e "${GREEN}Commit successful!${NC}"
 else
     echo -e "${YELLOW}Commit cancelled.${NC}"

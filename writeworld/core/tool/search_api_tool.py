@@ -1,20 +1,20 @@
 # !/usr/bin/env python3
 # -*- coding:utf-8 -*-
 import os
-# @Time    : 2024/6/12 09:44
-# @Author  : weizjajj 
-# @Email   : weizhongjie.wzj@antgroup.com
-# @FileName: search_api_tool.py
-
-
 from typing import Optional
 
+from agentuniverse.agent.action.tool.tool import Tool, ToolInput
+from agentuniverse.base.config.component_configer.configers.tool_configer import (
+    ToolConfiger,
+)
+from agentuniverse.base.util.env_util import get_from_env
 from langchain_community.utilities import SearchApiAPIWrapper
 from pydantic import Field
 
-from agentuniverse.agent.action.tool.tool import Tool, ToolInput
-from agentuniverse.base.config.component_configer.configers.tool_configer import ToolConfiger
-from agentuniverse.base.util.env_util import get_from_env
+# @Time    : 2024/6/12 09:44
+# @Author  : weizjajj
+# @Email   : weizhongjie.wzj@antgroup.com
+# @FileName: search_api_tool.py
 
 
 class SearchAPITool(Tool):
@@ -59,10 +59,10 @@ class SearchAPITool(Tool):
             return self.search_api_wrapper.results(query=input, **search_params)
         return self.search_api_wrapper.run(query=input, **search_params)
 
-    def initialize_by_component_configer(self, component_configer: ToolConfiger) -> 'Tool':
+    def initialize_by_component_configer(self, component_configer: ToolConfiger) -> "Tool":
         """Initialize the tool by the component configer."""
         super().initialize_by_component_configer(component_configer)
-        self.engine = component_configer.configer.value.get('engine', 'google')
-        self.search_params = component_configer.configer.value.get('search_params', {})
-        self.search_type = component_configer.configer.value.get('search_type', 'common')
+        self.engine = component_configer.configer.value.get("engine", "google")
+        self.search_params = component_configer.configer.value.get("search_params", {})
+        self.search_type = component_configer.configer.value.get("search_type", "common")
         return self

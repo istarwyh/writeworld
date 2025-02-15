@@ -12,7 +12,7 @@ instruction: |
   {chat_history}
 
   开始!
-  
+
   一共{total_round}轮讨论，讨论组的参与者包括: {participants}.
 
   请用中文回答，需要回答的问题是: {input}

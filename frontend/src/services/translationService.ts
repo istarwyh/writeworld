@@ -79,11 +79,11 @@ export async function translateText(
         if (line.startsWith('data:')) {
           try {
             const eventData = JSON.parse(line.slice(5));
-            
+
             // 处理进度信息
             if (eventData.process) {
               const process = eventData.process as ProcessResponse;
-              
+
               if (process.init_agent_result) {
                 onProgress?.({
                   type: 'init',
@@ -91,14 +91,14 @@ export async function translateText(
                 });
                 translatedText = process.init_agent_result;
               }
-              
+
               if (process.reflection_agent_result) {
                 onProgress?.({
                   type: 'enhance',
                   content: '让我想想：\n' + process.reflection_agent_result
                 });
               }
-              
+
               if (process.improve_agent_result) {
                 onProgress?.({
                   type: 'cultural',
@@ -107,7 +107,7 @@ export async function translateText(
                 translatedText = process.improve_agent_result;
               }
             }
-            
+
             // 处理最终结果
             if (eventData.result) {
               try {

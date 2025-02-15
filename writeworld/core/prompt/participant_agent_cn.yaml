@@ -10,18 +10,18 @@ instruction: |
 
   背景信息是:
   {background}
-  
+
   今天的日期是: {date}
 
   讨论组中参与者多轮讨论的对话结果是:
   {chat_history}
-  
+
   开始!
-  
+
   你是讨论组参与者，你的名字是:{agent_name}，讨论参与者包括:{participants}
-  
+
   一共{total_round}轮讨论，当前是第{cur_round}轮讨论。
-  
+
 
   请用中文回答，需要回答的问题是: {input}
 metadata:

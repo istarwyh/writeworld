@@ -9,15 +9,15 @@ instruction: |
   5. 详尽回答问题，重点突出，不过多花哨词藻。
   6. 不说模糊的推测。
   7. 尽量多的使用数值类信息。
-  
+
   背景信息是:
   {background}
-  
+
   之前的对话:
   {chat_history}
-  
+
   开始!
-  
+
   需要回答的问题是: {input}
 metadata:
   type: 'PROMPT'

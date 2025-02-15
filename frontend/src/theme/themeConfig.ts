@@ -8,27 +8,27 @@ const themeConfig: ThemeConfig = {
     colorSuccess: '#52c41a',     // 成功色保持清新
     colorWarning: '#E6B422',     // 金色作为警告色
     colorError: '#f5222d',       // 错误色保持醒目
-    
+
     // 中性色
     colorTextBase: '#333333',    // 主文本色
     colorBgBase: '#FAFAFA',      // 背景基色（宣纸色）
-    
+
     // 派生变量
     colorBgContainer: '#FFFFFF', // 容器背景色
     colorBorder: '#8B9DAF',     // 边框色（淡墨色）
-    
+
     // 圆角
     borderRadius: 4,            // 基础圆角
     borderRadiusLG: 8,         // 大圆角
-    
+
     // 字体
     fontFamily: "'Noto Serif SC', 'Crimson Pro', serif",
     fontSize: 16,              // 基础字号
-    
+
     // 间距
     margin: 16,               // 基础外边距
     padding: 16,              // 基础内边距
-    
+
     // 动画
     motion: true,             // 启用动画
     wireframe: false,         // 禁用线框风格

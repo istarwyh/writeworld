@@ -3,32 +3,32 @@
   --primary-color: #363945;    /* 墨色 */
   --secondary-color: #8B9DAF;  /* 淡墨 */
   --accent-color: #E6B422;     /* 金色点缀 */
-  
+
   /* 背景色 */
   --bg-primary: #FAFAFA;       /* 宣纸色 */
   --bg-secondary: #F5F5F5;     /* 浅灰 */
-  
+
   /* 文字颜色 */
   --text-primary: #333333;
   --text-secondary: #666666;
-  
+
   /* 间距 */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
-  
+
   /* 阴影 */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  
+
   /* 过渡 */
   --transition-base: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   --transition-fast: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   --transition-slow: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-  
+
   /* 字体大小 */
   --font-size-xs: 12px;
   --font-size-sm: 14px;
@@ -36,12 +36,12 @@
   --font-size-lg: 18px;
   --font-size-xl: 20px;
   --font-size-2xl: 24px;
-  
+
   /* 字体粗细 */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 600;
-  
+
   /* 行高 */
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;

@@ -30,14 +30,14 @@ export function Header({ onLanguageChange, currentLanguage = 'zh-CN' }: HeaderPr
           <nav className="hidden md:flex space-x-8">
             <a
               href="#"
-              className="text-text-secondary hover:text-primary px-3 py-2 
+              className="text-text-secondary hover:text-primary px-3 py-2
                          text-sm font-medium transition-colors duration-200"
             >
               首页
             </a>
             <a
               href="#"
-              className="text-text-secondary hover:text-primary px-3 py-2 
+              className="text-text-secondary hover:text-primary px-3 py-2
                          text-sm font-medium transition-colors duration-200"
             >
               翻译
@@ -57,8 +57,8 @@ export function Header({ onLanguageChange, currentLanguage = 'zh-CN' }: HeaderPr
 
             {/* Login Button */}
             <button
-              className="inline-flex items-center px-4 py-2 border border-transparent 
-                         text-sm font-medium rounded-md text-white bg-primary 
+              className="inline-flex items-center px-4 py-2 border border-transparent
+                         text-sm font-medium rounded-md text-white bg-primary
                          hover:opacity-90 transition-opacity duration-200"
             >
               登录

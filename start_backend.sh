@@ -104,4 +104,3 @@ sed -i.bak 's/^#custom_key_path = '\''\.\/custom_key\.toml'\''/custom_key_path =
 # Start the service
 cd bootstrap
 python -u server_application.py
-

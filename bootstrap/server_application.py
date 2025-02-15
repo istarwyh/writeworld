@@ -15,7 +15,7 @@ class ServerApplication:
         """Start the server application."""
         # Get the project root directory (two levels up from this file)
         project_root = Path(__file__).parent.parent
-        config_path = project_root / 'config' / 'config.toml'
+        config_path = project_root / "config" / "config.toml"
         AgentUniverse().start(config_path=str(config_path))
         start_web_server()
 

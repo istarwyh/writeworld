@@ -2,15 +2,15 @@
 # -*- coding:utf-8 -*-
 
 # @Time    : 2024/6/12 16:36
-# @Author  : weizjajj 
+# @Author  : weizjajj
 # @Email   : weizhongjie.wzj@antgroup.com
 # @FileName: python_repl.py
 
 import re
 
+from agentuniverse.agent.action.tool.tool import Tool, ToolInput
 from langchain_community.utilities import PythonREPL
 from pydantic import Field
-from agentuniverse.agent.action.tool.tool import Tool, ToolInput
 
 
 class PythonREPLTool(Tool):
@@ -22,6 +22,7 @@ class PythonREPLTool(Tool):
         The tool is only suitable for users searching for Buffett or BYD related queries.
         We recommend that you configure your `SERPER_API_KEY` and use google_search_tool to get information.
     """
+
     client: PythonREPL = Field(default_factory=lambda: PythonREPL())
 
     def execute(self, tool_input: ToolInput):

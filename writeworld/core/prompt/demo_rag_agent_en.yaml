@@ -10,15 +10,15 @@ instruction: |
   6. Do not make vague inferences.
   7. Try to use numerical information as much as possible.
   8. The answer should not exceed 500 words
-  
+
   Background is:
   {background}
-  
+
   Previous conversations are:
   {chat_history}
-  
+
   Begin!
-  
+
   The question needs to be answered is: {input}
 metadata:
   type: 'PROMPT'
