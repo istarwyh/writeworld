@@ -14,7 +14,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-agentuniverse = "0.0.13"
+agentuniverse = "0.0.14"
 setuptools = "^69.0.3"  # Replace pkg_resources
 langchain-community = "^0.0.38"  # Add explicit dependency for newer LangChain features
 
