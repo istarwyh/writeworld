@@ -5,6 +5,7 @@
 # @Author  : heji
 # @Email   : lc299034@antgroup.com
 # @FileName: agent.py
+# mypy: disable-error-code=import-not-found
 from abc import ABC, abstractmethod
 from datetime import datetime
 from queue import Queue
@@ -62,6 +63,7 @@ class EventStreamBaseAgent(Agent, ABC):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     output_stream: Optional[Queue[Dict[str, Any]]] = Field(default=None, exclude=True)
+    agent_info: Dict[str, str] = Field(default_factory=lambda: {"type": "event_stream"}, exclude=True)
 
     def emit_event(self, event: StreamEvent) -> None:
         """Emit a stream event to the output queue"""
@@ -81,20 +83,26 @@ class EventStreamBaseAgent(Agent, ABC):
         )
 
     def invoke_chain(
-        self, chain: RunnableSerializable[Any, str], agent_input: dict, input_object: InputObject, **kwargs: Any
+        self,
+        chain: RunnableSerializable[Any, str],
+        agent_input: Dict[str, Any],
+        input_object: InputObject,
+        **kwargs: Any,
     ) -> str:
+        """Invoke a chain with token streaming"""
         # 如果 self.output_stream 为空，使用 input_object 中的 output_stream
         if not self.output_stream:
             self.output_stream = input_object.get_data("output_stream")
 
         if not self.output_stream:
             res = chain.invoke(input=agent_input, config=self.get_run_config())
-            return res
+            return cast(str, res)
 
-        result = []
+        result: List[str] = []
         for i, token in enumerate(chain.stream(input=agent_input, config=self.get_run_config())):
-            self.emit_token(token=token, index=i, total_tokens=-1, current_tokens=i + 1)  # 流式输出时无法知道总长度
-        result.append(token)
+            token_str = cast(str, token)
+            self.emit_token(token=token_str, index=i, total_tokens=-1, current_tokens=i + 1)  # 流式输出时无法知道总长度
+            result.append(token_str)
         # 最后发送一个空白字符作为结束标志
         self.emit_token(token="", index=len(result), total_tokens=len(result) + 1, current_tokens=len(result) + 1)
         result.append("")
