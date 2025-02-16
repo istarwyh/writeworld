@@ -39,6 +39,12 @@ class TranslationAgent(StreamingTranslationAgent):
         keys = self.agent_model.profile.get("output_keys", [])
         return cast(List[str], keys)
 
+    def parse_input(self, input_object: InputObject, agent_input: Dict[str, Any]) -> Dict[str, Any]:
+        """Parse input and set up output stream"""
+        for key in self.input_keys():
+            agent_input[key] = input_object.get_data(key)
+        return agent_input
+
     def parse_result(self, planner_result: Dict[str, Any]) -> Dict[str, Any]:
         return planner_result
 

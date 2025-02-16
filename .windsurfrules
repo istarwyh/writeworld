@@ -1,4 +1,4 @@
-1. 每次更改代码或目录后都运行至少一个测试以保证代码基本质量。
+1. 每次更改代码或目录后都运行至少一个测试以保证代码基本质量。单元测试代码在 `writeworld/tests/unit/core`目录下
 
 2. 前端使用Ant Designt提出的[RICH 设计范式](https://x.ant.design/docs/spec/introduce-cn)，技术实现使用Next.js:https://x.ant.design/docs/react/use-with-next
 
@@ -17,3 +17,4 @@
    - 为集合类型（如 List, Dict）提供具体的类型参数
    - 在处理可选值时使用 Optional 类型
    - 为函数参数和返回值添加明确的类型标注
+   - 修改 mypy.ini 文件以适应三方包的类型缺陷

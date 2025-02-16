@@ -5,8 +5,10 @@ from agentuniverse.agent.input_object import InputObject
 from agentuniverse.agent.plan.planner.planner import Planner
 from agentuniverse.agent.plan.planner.planner_manager import PlannerManager
 
+from writeworld.core.agent.event_stream_base_agent import EventStreamBaseAgent
 
-class TranslationAgent(Agent):
+
+class TranslationAgent(EventStreamBaseAgent):
     def input_keys(self) -> list[str]:
         return self.agent_model.profile.get("input_keys")
 

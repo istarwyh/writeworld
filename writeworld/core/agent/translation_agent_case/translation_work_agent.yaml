@@ -1,6 +1,6 @@
 info:
   name: 'translation_work_agent'
-  description: '翻译测试Agent'
+  description: '初步翻译Agent'
 profile:
   prompt_version: 'translation_init.en'
   input_keys: ['source_lang','target_lang','source_text']

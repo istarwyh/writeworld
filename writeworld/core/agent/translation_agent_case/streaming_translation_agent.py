@@ -10,18 +10,18 @@ from agentuniverse.agent.output_object import OutputObject
 from agentuniverse.base.util.logging.logging_util import LOGGER
 from pydantic import BaseModel, ConfigDict, Field
 
+from writeworld.core.agent.event_stream_base_agent import EventStreamBaseAgent
 from writeworld.core.events.stream_events import (
     AgentResultEvent,
     AgentStartEvent,
     ErrorEvent,
     StreamEvent,
-    TokenGenerateEvent,
 )
 
 T = TypeVar("T")
 
 
-class StreamingTranslationAgent(Agent, ABC):
+class StreamingTranslationAgent(EventStreamBaseAgent, ABC):
     """Base class for streaming translation agents with event-based output"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -43,18 +43,6 @@ class StreamingTranslationAgent(Agent, ABC):
         """Signal the start of an agent's processing"""
         self.emit_event(AgentStartEvent(agent_info=self.agent_info, stage=stage))
 
-    def emit_token(self, token: str, index: int, total_tokens: int, current_tokens: int) -> None:
-        """Emit a token generation event"""
-        self.emit_event(
-            TokenGenerateEvent(
-                agent_info=self.agent_info,
-                token=token,
-                index=index,
-                total_tokens=total_tokens,
-                current_tokens=current_tokens,
-            )
-        )
-
     def emit_result(self, result: Dict[str, Any], stage: int) -> None:
         """Emit an agent result event"""
         self.emit_event(AgentResultEvent(agent_info=self.agent_info, result=result, stage=stage))
@@ -63,16 +51,13 @@ class StreamingTranslationAgent(Agent, ABC):
         """Emit an error event"""
         self.emit_event(ErrorEvent(agent_info=self.agent_info, error=error, stage=stage))
 
-    def parse_input(self, input_object: InputObject, agent_input: Dict[str, Any]) -> Dict[str, Any]:
-        """Parse input and set up output stream"""
-        for key in self.input_keys():
-            agent_input[key] = input_object.get_data(key)
-        return agent_input
-
     def execute_with_events(
         self, input_object: InputObject, stage: int, agent_name: str, agent_input: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
         """Execute an agent with event handling"""
+        # 如果 self.output_stream 为空，使用 input_object 中的 output_stream
+        if not self.output_stream:
+            self.output_stream = input_object.get_data("output_stream")
         try:
             self.start_agent(stage)
             result = self.execute_agent(input_object, agent_name, agent_input)

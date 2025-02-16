@@ -1,6 +1,6 @@
 info:
   name: 'translation_improve_agent'
-  description: '翻译反思Agent'
+  description: '翻译优化Agent'
 profile:
   prompt_version: 'translation_improve.en'
   input_keys: ['source_lang','target_lang','source_text','init_agent_result','reflection_agent_result']

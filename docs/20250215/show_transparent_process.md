@@ -13,7 +13,123 @@
 - 支持进度展示
 - 为未来扩展提供灵活性
 
+### 挑战
+问题的关键在于LLM 流式输出的特性：
+- 是一个个 token 连续输出的
+- 无法预知总长度
+- token 是按顺序的
+
+前端打字机效果的需求：
+- 需要知道每个 token 的位置
+- 需要知道进度
+- 需要平滑的动画效果
+
 ## 2. 系统设计
+
+### 2.0 系统流程
+#### 2.0.1 时序图
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Flask as Flask API
+    participant Task as StreamServiceRequestTask
+    participant Queue as Event Queue
+    participant Handler as EventHandler
+    participant Agent as TranslationAgent
+    participant Chain as LLM Chain
+    
+    Client->>+Flask: POST /stream_service
+    Flask->>+Task: create_task()
+    Task->>Task: init_event_queue()
+    Task->>+Agent: execute_agents()
+    
+    loop Token Generation
+        Agent->>+Chain: invoke_chain()
+        Chain-->>-Agent: stream_token
+        Agent->>Handler: emit_token_event
+        Handler->>Handler: process_event
+        Handler->>Queue: put_processed_event
+        Queue-->>Task: get_event
+        Task-->>Flask: yield event
+        Flask-->>Client: SSE event
+    end
+    
+    Agent->>Handler: emit_result_event
+    Handler->>Handler: process_event
+    Handler->>Queue: put_processed_event
+    Queue-->>Task: get_event
+    Task-->>Flask: yield event
+    Flask-->>Client: SSE event
+    
+    Agent->>Handler: emit_complete_event
+    Handler->>Handler: process_event
+    Handler->>Queue: put_processed_event
+    Queue-->>Task: get_event
+    Task-->>Flask: yield event
+    Flask-->>-Client: SSE event
+```
+
+#### 2.0.2 流程图
+```mermaid
+graph TD
+    A[Client Request] --> B[Flask API]
+    B --> C[StreamServiceRequestTask]
+    C --> D[Event Queue]
+    
+    subgraph Translation Process
+        D --> E[TranslationAgent]
+        E --> F[Work Agent]
+        E --> G[Reflection Agent]
+        E --> H[Improve Agent]
+        
+        F --> I[LLM Chain]
+        G --> I
+        H --> I
+        
+        I --> J[Token Stream]
+        J --> K[Event Generation]
+    end
+    
+    K --> L[Event Queue]
+    L --> M[SSE Response]
+    M --> N[Client Display]
+    
+    subgraph Event Types
+        O[Token Event]
+        P[Result Event]
+        Q[Complete Event]
+        R[Error Event]
+    end
+```
+
+#### 2.0.3 数据流说明
+1. **请求初始化**
+   - Client发送POST请求到`/stream_service`
+   - Flask创建`StreamServiceRequestTask`实例
+   - Task初始化事件队列和输出流
+
+2. **Agent执行流程**
+   - TranslationAgent接收InputObject和计划输入
+   - 按顺序执行Work、Reflection和Improve Agent
+   - 每个Agent通过LLM Chain生成token流
+
+3. **事件流处理**
+   - Agent生成token时发送TokenGenerateEvent
+   - Agent完成阶段性工作时发送AgentResultEvent
+   - 所有Agent执行完成后发送CompleteEvent
+   - 发生错误时发送ErrorEvent
+
+4. **数据传输**
+   - 事件通过Queue传递给Task
+   - Task将事件转换为SSE格式
+   - Flask将SSE事件流式传输给Client
+   - Client接收并处理事件流
+
+5. **状态管理**
+   - 每个事件包含进度信息
+   - Client根据事件类型更新UI
+   - 错误事件触发错误处理流程
 
 ### 2.1 数据结构设计
 ```json
@@ -210,15 +326,3 @@ class EventHandler:
         if handler:
             handler(event)
 ```
-
-## 4. 后续优化
-
-### 4.1 短期优化
-- 优化 token 数量估算算法
-- 添加更多事件类型支持
-- 完善错误处理机制
-
-### 4.2 长期规划
-- 支持更多类型的 Agent
-- 提供可配置的事件系统
-- 添加监控和统计功能
