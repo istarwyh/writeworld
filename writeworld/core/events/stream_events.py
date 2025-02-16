@@ -72,7 +72,7 @@ class TokenGenerateEvent(StreamEvent):
         return {"text": self.token, "index": self.index, "isComplete": self.total_tokens == self.current_tokens}
 
     def get_metadata(self) -> Dict[str, Any]:
-        if self.total_tokens < 0:
+        if self.total_tokens > 0:
             progress = self.index / self.total_tokens * 90
         else:
             # 如果没有预估总长度，使用非线性进度

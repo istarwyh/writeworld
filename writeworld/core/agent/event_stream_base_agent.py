@@ -17,7 +17,6 @@ from agentuniverse.agent.action.knowledge.knowledge_manager import KnowledgeMana
 from agentuniverse.agent.action.knowledge.store.document import Document
 from agentuniverse.agent.action.tool.tool import Tool
 from agentuniverse.agent.action.tool.tool_manager import ToolManager
-from agentuniverse.agent.agent import Agent
 from agentuniverse.agent.agent_manager import AgentManager
 from agentuniverse.agent.agent_model import AgentModel
 from agentuniverse.agent.input_object import InputObject
@@ -30,6 +29,7 @@ from agentuniverse.agent.plan.planner.planner_manager import PlannerManager
 from agentuniverse.agent.plan.planner.react_planner.stream_callback import (
     InvokeCallbackHandler,
 )
+from agentuniverse.agent.template.agent_template import AgentTemplate
 from agentuniverse.base.annotation.trace import trace_agent
 from agentuniverse.base.component.component_base import ComponentBase
 from agentuniverse.base.component.component_enum import ComponentEnum
@@ -58,7 +58,7 @@ from writeworld.core.events.stream_events import StreamEvent, TokenGenerateEvent
 T = TypeVar("T")
 
 
-class EventStreamBaseAgent(Agent, ABC):
+class EventStreamBaseAgent(AgentTemplate, ABC):
     """The parent class of all agent models, containing only attributes."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

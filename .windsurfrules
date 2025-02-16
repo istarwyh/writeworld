@@ -11,7 +11,6 @@
 6. 每次更改后使用 pre-commit run mypy 检查文件类型，类型处理经验：
    - 使用文件级别的 mypy 配置来禁用特定警告（如：# mypy: disable-error-code=import-untyped）
    - 为未类型化的第三方库导入添加适当的类型忽略注释
-   - 使用 `cast` 函数确保类型安全，特别是处理动态类型时
    - 为字典操作添加默认值，避免可能的 `None` 值
    - 使用 TypeVar 进行泛型类型标注
    - 为集合类型（如 List, Dict）提供具体的类型参数
