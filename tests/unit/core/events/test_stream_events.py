@@ -2,12 +2,7 @@ from typing import Any, Dict
 
 import pytest
 
-from writeworld.core.events.stream_events import (
-    AgentResultEvent,
-    AgentStartEvent,
-    ErrorEvent,
-    TokenGenerateEvent,
-)
+from writeworld.core.events.stream_events import ErrorEvent, TokenGenerateEvent
 
 
 @pytest.fixture
@@ -24,26 +19,6 @@ def test_token_generate_event(agent_info: Dict[str, str]) -> None:
     assert data["data"]["agent"] == "test_agent"
     assert data["data"]["content"]["text"] == "test"
     assert data["data"]["metadata"]["progress"] == 45.0  # (5/10 * 90)
-
-
-def test_agent_result_event(agent_info: Dict[str, str]) -> None:
-    result = {"test": "result"}
-    event = AgentResultEvent(agent_info=agent_info, result=result, stage=2)
-
-    data = event.to_stream_data()
-    assert data["type"] == "translation_stream"
-    assert data["data"]["event"] == "agent_result"
-    assert data["data"]["stage"] == 2
-    assert data["data"]["content"] == result
-
-
-def test_agent_start_event(agent_info: Dict[str, str]) -> None:
-    event = AgentStartEvent(agent_info=agent_info, stage=1)
-
-    data = event.to_stream_data()
-    assert data["type"] == "translation_stream"
-    assert data["data"]["event"] == "agent_start"
-    assert data["data"]["status"] == "start"
 
 
 def test_error_event(agent_info: Dict[str, str]) -> None:

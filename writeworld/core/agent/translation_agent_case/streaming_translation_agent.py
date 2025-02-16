@@ -12,10 +12,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from writeworld.core.agent.event_stream_base_agent import EventStreamBaseAgent
 from writeworld.core.events.stream_events import (
-    AgentResultEvent,
-    AgentStartEvent,
     ErrorEvent,
     StreamEvent,
+    TranslationStage,
 )
 
 T = TypeVar("T")
@@ -39,17 +38,9 @@ class StreamingTranslationAgent(EventStreamBaseAgent, ABC):
         if self.output_stream:
             self.output_stream.put(event.to_stream_data())
 
-    def start_agent(self, stage: int) -> None:
-        """Signal the start of an agent's processing"""
-        self.emit_event(AgentStartEvent(agent_info=self.agent_info, stage=stage))
-
-    def emit_result(self, result: Dict[str, Any], stage: int) -> None:
-        """Emit an agent result event"""
-        self.emit_event(AgentResultEvent(agent_info=self.agent_info, result=result, stage=stage))
-
     def emit_error(self, error: Exception, stage: Optional[int] = None) -> None:
         """Emit an error event"""
-        self.emit_event(ErrorEvent(agent_info=self.agent_info, error=error, stage=stage))
+        self.emit_event(ErrorEvent(agent_info=self.agent_info, error=error, stage=TranslationStage.ERROR))
 
     def execute_with_events(
         self, input_object: InputObject, stage: int, agent_name: str, agent_input: Dict[str, Any]
@@ -59,7 +50,6 @@ class StreamingTranslationAgent(EventStreamBaseAgent, ABC):
         if not self.output_stream:
             self.output_stream = input_object.get_data("output_stream")
         try:
-            self.start_agent(stage)
             result = self.execute_agent(input_object, agent_name, agent_input)
             if result:
                 # Handle both OutputObject and dict results
@@ -67,7 +57,6 @@ class StreamingTranslationAgent(EventStreamBaseAgent, ABC):
                 if not isinstance(result_dict, dict):
                     LOGGER.error(f"Unexpected result type from agent {agent_name}: {type(result_dict)}")
                     return None
-                self.emit_result(result_dict, stage)
                 return result_dict
             return None
         except Exception as e:

@@ -63,7 +63,6 @@ class EventStreamBaseAgent(AgentTemplate, ABC):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     output_stream: Optional[Queue[Dict[str, Any]]] = Field(default=None, exclude=True)
-    agent_info: Dict[str, str] = Field(default_factory=lambda: {"type": "event_stream"}, exclude=True)
 
     def emit_event(self, event: StreamEvent) -> None:
         """Emit a stream event to the output queue"""
@@ -74,7 +73,7 @@ class EventStreamBaseAgent(AgentTemplate, ABC):
         """Emit a token generation event"""
         self.emit_event(
             TokenGenerateEvent(
-                agent_info=self.agent_info,
+                agent_info=self.agent_model.info,
                 token=token,
                 index=index,
                 total_tokens=total_tokens,
@@ -101,6 +100,7 @@ class EventStreamBaseAgent(AgentTemplate, ABC):
         result: List[str] = []
         for i, token in enumerate(chain.stream(input=agent_input, config=self.get_run_config())):
             token_str = cast(str, token)
+            LOGGER.debug(f"token {token_str}")
             self.emit_token(token=token_str, index=i, total_tokens=-1, current_tokens=i + 1)  # 流式输出时无法知道总长度
             result.append(token_str)
         # 最后发送一个空白字符作为结束标志
