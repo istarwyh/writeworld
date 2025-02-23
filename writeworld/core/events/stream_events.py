@@ -54,7 +54,7 @@ class EventType(Enum):
     TOKEN_GENERATION = "token_generation"  # 生成单个token
     RELATE_QUESTION = "relate_question"  # 相关问题
     RELATE_ACTION = "relate_action"  # 相关动作
-    ANSWER = "answer"  # 答案
+    ANSWER = "answer"  # 回答
     COMPLETE = "complete"  # 整体完成
     ERROR = "error"  # 错误
 
